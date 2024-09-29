@@ -34,7 +34,7 @@ function LinkList() {
             return count;
         },
         at(index){
-            if (index < 0) {
+            if (index < 0 || index >= this.size()) {
                 return null;
             }
             for(let i = 0; head !== null; i++){
@@ -44,10 +44,8 @@ function LinkList() {
                 head = head.nextNode;
             }             
         },   
-        
         popNode(){
-            let current = head;
-            if (current === null) {
+            if (head === null) {
                 return null;
             }
             if (head === tail) {
@@ -56,27 +54,50 @@ function LinkList() {
                 tail = null;
                 return value;
             }
-            while (head.nextNode !== tail) {
-                head = head.nextNode;
-            }
+         
             const value = tail.value;
-            tail = head;
-            head.nextNode = null;
+            tail.value = null;
+            tail.nextNode = null;
             return value;   
         },
         getHead(){
-            if (head === null) {
-                return null;
-            }
-            for (let i = 0; head !== null; i++) {
-               return `${head[i]} -> ${head[i + 1]}`; 
-            }    
-            
-            
+            return head;   
         },
         getTail(){
             return tail;
         },
+        find(value){
+          for(let i = 0; head !== null; i++){
+              if (head.value === value) {
+                  return i;
+              }
+              head = head.nextNode;
+          }  
+          return null;
+        },
+        contain(value){
+            for(let i = 0; head !== null; i++){
+                
+                if (head.value === value) {
+                    return true;
+                }
+                head = head.nextNode;
+            }
+            return false;    
+        },
+        toString(){
+            let str = "";
+            let current = head;
+            while (current !== null) {  
+                str += ` (${current.value}) ->`;
+                current = current.nextNode;
+               if (current === null) {
+                    str += " null";
+                }
+            }
+          
+            return str;
+        }
 
     }
 }
@@ -90,12 +111,13 @@ function Node(value = null, nextNode = null) {
 
 const list = LinkList();
 
-list.appendValue(5)
-list.appendValue(6)
-list.appendValue(7)
-list.appendValue(8)
-list.appendValue(9)
-list.prependValue(10)
-list.popNode()
-console.log(list.getTail());
+list.appendValue("dog")
+list.appendValue("cat")
+list.appendValue("dolphin")
+list.appendValue("elephant")
+list.appendValue("fox")
+list.appendValue("giraffe")
+list.prependValue("lion")
+
+console.log(list.toString()); //(lion) -> (dog) -> (cat) -> (dolphin) -> (elephant) -> (fox) -> (giraffe) -> null
 
